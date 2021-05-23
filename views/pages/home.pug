@@ -7,8 +7,10 @@ block content
         li 
            div 
               p 
-                a(href="#")
+                a(href=`/articles/${article.slug}`)
                   strong #{article.title}
               p #{article.content}
+              a(href=`/articles/${article._id}/update`) Update
+      
     button 
       a(href="/articles/new")  New
