@@ -5,7 +5,9 @@ const { default: slugify } = require('slugify');
 const database = require('./config/database');
 const Article = require('./model/article');
 const methodOverride = require('method-override');
-
+const UserModel = require('./model/user');
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const PORT = 3000;
 const PUBLIC_PATH = join(__dirname, 'public');
 
@@ -32,9 +34,10 @@ app.use(methodOverride(function (req, res) {
         return method;
     }
 }));
-
+app.use(cookieParser('minhnhat2904'));
 //Pages
 app.get('/',async (req, res)=>{
+    console.log(req.signedCookies);
     const articles = await Article.find().sort('-createdAt'); // lấy tất cả dữ liệu từ database
     return res.render('pages/home.pug',{
         articles
@@ -82,7 +85,10 @@ app.get('/articles/:slug',async (req, res)=>{
     }
     return res.render('pages/detail.pug',{article});
 })
-
+//authen
+app.get('/login',(req, res) =>{
+    return res.render('pages/login');
+})
 //REST APIs
 //post them du lieu
 app.post('/articles',(req, res, next) => {
@@ -119,7 +125,30 @@ app.put('/articles/:_id', async (req, res)=>{
     }
 })
 
+app.post('/login',async (req, res) => {
+    const user = await UserModel.findOne({
+        username : req.body.email
+    });
+    console.log(user);
+    if(!user || !bcrypt.compareSync(req.body.password, user.password)){
+        return res.send("Khong that username");
+    }
 
+    const userInfomation = {
+        id: user._id,
+        username: user.username,
+    }
+    // {
+    //     maxAge: 900000,
+    //     httpOnly: true,
+    //     signed: true,
+    // }
+    res.cookie('user', userInfomation,{
+        httpOnly: true,
+        signed: true,
+    });
+    return res.redirect('/');
+} )
 app.listen(PORT,()=>{
     console.log(`Server is listening on ${PORT}`)
 })
