@@ -2,7 +2,7 @@ extends ../layout/main.pug
 
 block content
     p Add new article
-    form(action="/articles", method="post")
+    form(action="/articles/new", method="post")
         input(type="text" class="title" placeholder="title" name="title")
         input(type="text" class="content" placeholder="content" name="content")
         input(type="text" class="category" placeholder="category" name="category")
