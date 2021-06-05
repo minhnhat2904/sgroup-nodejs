@@ -1,13 +1,14 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const ArticleModel = require('../model/article');
-const UserModel = require('../model/user');
-const SessionModel = require('../model/session')
-const {DB_CONNECTION} = require('../env')
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import ArticleModel from '../model/article';
+import UserModel from '../model/user';
+import SessionModel from '../model/session';
+import CONFIG from '../env';
+
 const database = async () => {
     try {
         const DEFAULT_FWD = bcrypt.hashSync('333333',10);
-        await mongoose.connect(DB_CONNECTION, { 
+        await mongoose.connect("" + CONFIG.DB_CONNECTION, { 
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify : false ,
@@ -31,7 +32,7 @@ const database = async () => {
         process.exit(1);
     }
 }
-const dbNewArticle = async (newArticle) => {
+const dbNewArticle = async (newArticle: any) => {
     try {
         await mongoose.connect('mongodb://localhost:27017/training', { 
             useNewUrlParser: true,
@@ -44,4 +45,4 @@ const dbNewArticle = async (newArticle) => {
         process.exit(1);
     }
 }
-module.exports = {database, dbNewArticle}
+export default {database, dbNewArticle}

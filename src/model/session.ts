@@ -1,5 +1,5 @@
-const {model, Schema} = require('mongoose');
-const UserModel = require('./user');
+import {model, Schema} from 'mongoose';
+import UserModel from './user';
 
 const SessionSchema = new Schema({
     user: {
@@ -11,14 +11,14 @@ const SessionSchema = new Schema({
     }
 });
 SessionSchema.pre('save',function(){
-    if(!this.createdAt){
-        this.createdAt = Date.now();
+    if(!(this as any).createdAt){
+        (this as any).createdAt = Date.now();
     }
-    this.updatedAt = Date.now();
+    (this as any).updatedAt = Date.now();
 });
 
 //một mô hình của user
 //đối số đầu tiên là tên mô hình,
 const SessionModel = model('session', SessionSchema);
 
-module.exports = SessionModel;
+export default SessionModel;

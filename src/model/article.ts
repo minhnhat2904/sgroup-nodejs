@@ -1,4 +1,4 @@
-const {model, Schema} = require('mongoose');
+import {model, Schema} from 'mongoose';
 
 const ArticleSchema = new Schema({
     title: String,
@@ -13,14 +13,14 @@ const ArticleSchema = new Schema({
     },
 });
 ArticleSchema.pre('save',function(){
-    if(!this.createdAt){
-        this.createdAt = Date.now();
+    if(!(this as any).createdAt){
+        (this as any).createdAt = Date.now();
     }
-    this.updatedAt = Date.now();
+    (this as any).updatedAt = Date.now();
 });
 
 //một mô hình của article
 //đối số đầu tiên là tên mô hình,
 const ArticleModel = model('articles', ArticleSchema);
 
-module.exports = ArticleModel;
+export default ArticleModel;

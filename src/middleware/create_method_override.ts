@@ -1,9 +1,9 @@
-module.exports = function methodOverride (getter, options) {
+export default  function methodOverride (getter:any, options:any) {
     var opts = options || {}
     // get the getter fn
     var get = typeof getter === 'function'
       ? getter // get = getter
-      : createGetter(getter || 'X-HTTP-Method-Override');
+      : 0;
   
     // get allowed request methods to examine
     var methods = opts.methods === undefined
@@ -11,7 +11,7 @@ module.exports = function methodOverride (getter, options) {
       : opts.methods;
     //methods = ['POST']
   
-    return function methodOverride (req, res, next) {
+    return function methodOverride (req:any, res:any, next:any) {
       var val;
 
       req.originalMethod = req.originalMethod || req.method;

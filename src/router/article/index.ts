@@ -1,17 +1,17 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const slugify = require('slugify');
-const Article = require('../../model/article');
+import slugify from 'slugify';
+import Article from '../../model/article';
 
 //du lieu trang sport
-router.get('/sport',async (req, res)=>{
+router.get('/sport',async (req:any, res:any)=>{
     const articles = await Article.find({category: 'sport'}); // lấy tất cả dữ liệu từ database
     return res.render('pages/sport.pug',{
         articles
     });
 })
 //du lieu trang weathers
-router.get('/weathers',async (req, res)=>{
+router.get('/weathers',async (req:any, res:any)=>{
     const articles = await Article.find({category : 'weathers'}); // lấy tất cả dữ liệu từ database
     return res.render('pages/weathers.pug',{
         articles
@@ -19,11 +19,11 @@ router.get('/weathers',async (req, res)=>{
 })
 
 
-router.get('/new', (req, res, next)=>{
+router.get('/new', (req:any, res:any, next:any)=>{
     return res.render('pages/newArticle.pug');
 })
 
-router.post('/new',(req, res, next) => {
+router.post('/new',(req:any, res:any, next:any) => {
         
     var newArticle = {
         "title" : req.body.title,
@@ -36,7 +36,7 @@ router.post('/new',(req, res, next) => {
     res.redirect('/');
 })
 
-router.get('/:_id/update', async (req, res, next)=>{
+router.get('/:_id/update', async (req:any, res:any, next:any)=>{
     const {_id} = req.params;
 
     const article = await Article.findOne({_id});
@@ -48,7 +48,7 @@ router.get('/:_id/update', async (req, res, next)=>{
     return res.render('./pages/updateArticle.pug',{article});
 })
 
-router.put('/:_id', async (req, res)=>{
+router.put('/:_id', async (req:any, res:any)=>{
     try {
         const id = req.params._id;
         let updateArticle = {
@@ -68,7 +68,7 @@ router.put('/:_id', async (req, res)=>{
         console.log("Loi roi huhu " + error);
     }
 })
-router.get('/:slug',async (req, res)=>{
+router.get('/:slug',async (req:any, res:any)=>{
     const {slug} = req.params;
     const article = await Article.findOne({slug});
     if(!article){
@@ -80,4 +80,4 @@ router.get('/:slug',async (req, res)=>{
 })
 
 
-module.exports = router;
+export = router;

@@ -1,15 +1,15 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const UserModel = require('../../model/user')
+import express from 'express';
+import bcrypt from 'bcrypt';
+import UserModel from '../../model/user';
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
-const SessionModel = require('../../model/session');
+import SessionModel from '../../model/session';
 //authen
-router.get('/login',(req, res) =>{
+router.get('/login',(req:any, res:any) =>{
     return res.render('pages/login');
 })
 
-router.post('/login',async (req, res) => {
+router.post('/login',async (req:any, res:any) => {
     const user = await UserModel.findOne({
         username : req.body.email
     });
@@ -53,4 +53,4 @@ router.post('/login',async (req, res) => {
     return res.redirect('/');
 } )
 
-module.exports = router;
+export = router;

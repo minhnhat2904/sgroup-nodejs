@@ -1,8 +1,8 @@
-const SessionModel = require("../model/session");
+import SessionModel from '../model/session';
 
-module.exports = {
-    auth(type){
-        return async (req, res, next) => {
+export default {
+    auth(type : any){
+        return async (req : any, res: any, next:any) => {
             const {user} = req.signedCookies;
             
             // const session = await SessionModel.findById(user);

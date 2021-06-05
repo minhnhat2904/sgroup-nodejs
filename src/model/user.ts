@@ -1,4 +1,4 @@
-const {model, Schema} = require('mongoose');
+import {model, Schema} from 'mongoose';
 
 const UserSchema = new Schema({
     username: String,
@@ -11,14 +11,14 @@ const UserSchema = new Schema({
     },
 });
 UserSchema.pre('save',function(){
-    if(!this.createdAt){
-        this.createdAt = Date.now();
+    if(!(this as any).createdAt){
+        (this as any).createdAt = Date.now();
     }
-    this.updatedAt = Date.now();
+    (this as any).updatedAt = Date.now();
 });
 
 //một mô hình của user
 //đối số đầu tiên là tên mô hình,
 const UserModel = model('users', UserSchema);
 
-module.exports = UserModel;
+export default UserModel;
