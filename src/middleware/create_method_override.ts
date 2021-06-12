@@ -1,4 +1,6 @@
-export default  function methodOverride (getter:any, options:any) {
+import { NextFunction, Request, Response } from "express";
+
+export default  function methodOverride (getter:any, options?:any) {
     var opts = options || {}
     // get the getter fn
     var get = typeof getter === 'function'
@@ -11,16 +13,16 @@ export default  function methodOverride (getter:any, options:any) {
       : opts.methods;
     //methods = ['POST']
   
-    return function methodOverride (req:any, res:any, next:any) {
+    return function methodOverride (req : any, res : any, next: any) {
       var val;
-
       req.originalMethod = req.originalMethod || req.method;
   
       // validate request is an allowed method
       if (methods && methods.indexOf(req.originalMethod) === -1) {
         return next()
       }
-      val = get(req, res);  
+      val = get(req, res);
+      
       // replace
       if (val !== undefined) {
         req.method = val;

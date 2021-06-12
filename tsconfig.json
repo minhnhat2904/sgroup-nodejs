@@ -13,6 +13,9 @@
       "resolveJsonModule": true
     },
     "exclude": [
-      "public"
+      "node_modules",
+      "js",
+      "public",
+      "build"
     ]
-  }
+}

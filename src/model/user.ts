@@ -1,6 +1,14 @@
 import {model, Schema} from 'mongoose';
+import { updateHook } from './hooks/updateHook';
 
-const UserSchema = new Schema({
+export interface IUserSchema{
+    username: string,
+    password: string,
+    createdAt:Date,
+    updatedAt:Date,
+}
+
+const UserSchema = new Schema<IUserSchema, any>({
     username: String,
     password: String,
     createdAt:{
@@ -10,12 +18,7 @@ const UserSchema = new Schema({
         type: Date,
     },
 });
-UserSchema.pre('save',function(){
-    if(!(this as any).createdAt){
-        (this as any).createdAt = Date.now();
-    }
-    (this as any).updatedAt = Date.now();
-});
+UserSchema.pre('save',updateHook);
 
 //một mô hình của user
 //đối số đầu tiên là tên mô hình,

@@ -1,15 +1,11 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import {join}  from 'path';
-import slugify from 'slugify';
 
 import database from './config/database';
-import Article  from './model/article';
 import methodOverride from './middleware/create_method_override';
-import UserModel from './model/user';
-import router from './router';
+import router from './core';
 import cookieParser from 'cookie-parser';
-import bcrypt from 'bcrypt';
-import CONFIG from './env';
+import {envConfig} from './env';
 const ROOT_DIR = process.cwd();
 
 const PUBLIC_PATH = join(ROOT_DIR, 'public');
@@ -29,17 +25,22 @@ app.use(
     })
 );
 
-app.use(methodOverride(function (req: any, res: any) {
-    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-        var method = req.body._method;
+app.use(methodOverride(function (req: Request, res: Response) {  
+    if (req.body && typeof req.body === 'object' && '_method' in req.body || req.query._method == "DELETE") {
+        var method = req.body._method;        
+        if(method == null){
+            method = req.query._method;
+            delete req.query._method;            
+            return method;
+        }
         delete req.body._method;
         return method;
     }
-},'POST'));
-app.use(cookieParser(CONFIG.COOKIE_SECRET));
+}));
+app.use(cookieParser(envConfig.get('COOKIE_SECRET')));
 
 app.use('/',router);
 
-app.listen(CONFIG.PORT,()=>{
-    console.log(`Server is listening on ${CONFIG.PORT}`)
-})
+app.listen(envConfig.get('PORT'),()=>{
+    console.log(`Server is listening on ${envConfig.get('PORT')}`)
+});

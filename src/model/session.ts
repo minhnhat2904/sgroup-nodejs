@@ -1,20 +1,12 @@
 import {model, Schema} from 'mongoose';
-import UserModel from './user';
 
 const SessionSchema = new Schema({
     user: {
         _id: String,
         username: String,
     },
-    lock:{
-        type: Boolean
-    }
-});
-SessionSchema.pre('save',function(){
-    if(!(this as any).createdAt){
-        (this as any).createdAt = Date.now();
-    }
-    (this as any).updatedAt = Date.now();
+    expired: Number, // Use logout when expired comes
+    renewTime: Number, // Check if user is no longer working in that session
 });
 
 //một mô hình của user

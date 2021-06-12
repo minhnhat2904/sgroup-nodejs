@@ -3,12 +3,12 @@ import bcrypt from 'bcrypt';
 import ArticleModel from '../model/article';
 import UserModel from '../model/user';
 import SessionModel from '../model/session';
-import CONFIG from '../env';
+import { envConfig } from '../env';
 
 const database = async () => {
     try {
-        const DEFAULT_FWD = bcrypt.hashSync('333333',10);
-        await mongoose.connect("" + CONFIG.DB_CONNECTION, { 
+        const DEFAULT_FWD = bcrypt.hashSync('mn3333',10);
+        await mongoose.connect("" + envConfig.get('DB_CONNECTION'), { 
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify : false ,
