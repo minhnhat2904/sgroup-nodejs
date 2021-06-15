@@ -1,6 +1,17 @@
-import {model, Schema} from 'mongoose';
+import {Document, model, Schema} from 'mongoose';
 
-const SessionSchema = new Schema({
+export interface SessionPayload{
+    _id: string;
+    username: string;
+}
+
+export interface ISessionSchema extends Document {
+    user : SessionPayload,
+    expired: number,
+    renewTime: number, 
+}
+
+const SessionSchema = new Schema<ISessionSchema>({
     user: {
         _id: String,
         username: String,
@@ -11,6 +22,7 @@ const SessionSchema = new Schema({
 
 //một mô hình của user
 //đối số đầu tiên là tên mô hình,
-const SessionModel = model('session', SessionSchema);
+const SessionModel = model<ISessionSchema>('session', SessionSchema);
+
 
 export default SessionModel;
