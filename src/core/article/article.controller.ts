@@ -1,9 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import slugify from 'slugify';
 import Article from '../../model/article';
+import cloudinary from 'cloudinary'; 
+
 
 class Controller {
-    create = async (req : Request, res: Response) => {
+    create = async (req : Request, res: Response, next: NextFunction) => {  
+        
         var newArticle = {
             "title" : req.body.title,
             "content" : req.body.content,
@@ -11,8 +14,8 @@ class Controller {
             "slug" : slugify(req.body.title),
         }
         // database.dbNewArticle(newArticle);
-        Article.create(newArticle);
-        res.redirect('/');
+        await Article.create(newArticle);
+        return res.redirect("/");
     }
 
     updateById = async (req: Request, res: Response) => {

@@ -4,6 +4,7 @@ export interface IArticleDto {
     title : string,
     content : string,
     category : string,
+    url: string,
 }
 
 export function ArticleDto(req: Request) : IArticleDto{
@@ -11,5 +12,6 @@ export function ArticleDto(req: Request) : IArticleDto{
        title: req.body.title,
        content: req.body.content,
        category: req.body.category,
+       url: req.body.url,
     }
 }

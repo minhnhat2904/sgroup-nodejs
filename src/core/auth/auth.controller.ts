@@ -10,20 +10,21 @@ import { LoginDto } from "./dto/login.dto";
 
 class Controller {
     private authService: AuthService;
+    
     constructor(authService: AuthService) {
         this.authService = authService;
     }
-
+    
     login = async (req: Request, res: Response) => {
         const loginCase = Number.parseInt(req.query.case as string);
-
+        
         try {
             const sessionId = await this.authService.loginUserCase(LoginDto(req.body), loginCase);
 
             // Phien dang nhap cua nguoi khac dang hop le
             if (!sessionId) {
                 // return res.redirect('/auth/login');
-                return res.send('Dang co nguoi khac dang nhap roi')
+                return res.send('Dang co nguoi khac dang nhap roi');
             }
             // Minh da dang nhap
             res.cookie('sesionId', sessionId, {
@@ -36,6 +37,19 @@ class Controller {
         } catch (error) {
             return res.send(error.message);
         }
+    }
+
+    register = async (req: Request, res: Response) => {
+        try {            
+            await this.authService.register(LoginDto(req.body));
+        } catch (error) {
+            return res.status(409).json({
+                message : error
+            })
+        }
+        return res.status(200).json({
+            message: "OK"
+        });
     }
 }
 

@@ -1,9 +1,8 @@
 import { SocialCase } from "../../enum/SocialCase.enum";
 import { AuthService } from "./api/authService";
-import { ILoginDto, LoginDto } from "./dto/login.dto";
+import { ILoginDto } from "./dto/login.dto";
 import bcrypt from 'bcrypt';
 import { SessionService } from "../session/api/sessionService";
-import { servicesVersion } from "typescript";
 import { SessionServiceImpl } from "../session/session.service";
 import UserModel from "../../model/user";
 import { SessionPayload } from "../../model/session";
@@ -13,6 +12,19 @@ class Service implements AuthService {
 
     constructor(sessionService : SessionService ) {
         this.sessionService = sessionService;
+    }
+    async register(loginDto: ILoginDto): Promise<void> {
+        const user = await UserModel.findOne({
+            username : loginDto.username
+        });
+        
+        if(user){
+            throw new Error('This account was existed');
+        };
+
+        loginDto.password = bcrypt.hashSync(loginDto.password, 10);
+        
+        await UserModel.create(loginDto);
     }
 
     loginUserCase(body : any, type: SocialCase): Promise<string | null> {
@@ -29,9 +41,11 @@ class Service implements AuthService {
         }
     }
     async loginDefault(loginDto: ILoginDto): Promise<string | null> {
+        
         const user = await UserModel.findOne({
-            username : loginDto.email
+            username : loginDto.username
         });
+        
         if(!user || !bcrypt.compareSync(loginDto.password, user.password)){
             throw new Error('Email or password is not correct')
         }
@@ -40,7 +54,7 @@ class Service implements AuthService {
             _id: user._id,
             username: user.username,
         }
-
+        
         const currentUserSession = await this.sessionService.findByUserId(user.id);
         
         // Tao moi 1 session cho minh
@@ -51,7 +65,7 @@ class Service implements AuthService {
             return session._id;
         }
 
-        // Session cau user khac da het han
+        // Session cua user khac da het han
         if(Date.now() - currentUserSession.expired > 0 || Date.now() - currentUserSession.renewTime > 0){
             // xoa phien dang nhap cua user do
             await this.sessionService.delete(user._id);
@@ -63,8 +77,6 @@ class Service implements AuthService {
 
         return null;
     }
-
-
 }
 
 export const AuthServiceImpl = new Service(SessionServiceImpl);

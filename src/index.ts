@@ -6,6 +6,7 @@ import methodOverride from './middleware/create_method_override';
 import router from './core';
 import cookieParser from 'cookie-parser';
 import {envConfig} from './env';
+const multer = require('multer');
 const ROOT_DIR = process.cwd();
 
 const PUBLIC_PATH = join(ROOT_DIR, 'public');
@@ -18,7 +19,7 @@ app.set('view engine', 'pug');
 app.set('views',VIEW_PATH);
 //có thể gọi file css, js đồ 
 app.use(express.static(PUBLIC_PATH));
-
+app.use(express.json());
 app.use(
     express.urlencoded({
       extended: true

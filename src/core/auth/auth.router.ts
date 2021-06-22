@@ -1,12 +1,17 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 const router = express.Router();
 import SessionModel from '../../model/session';
 import { AuthController } from './auth.controller';
 import { validateLogin } from './validator/login.validator';
 //authen
-router.get('/login',(req: Request, res: Response) =>{
+router.get('/login',(req, res) =>{
     return res.render('pages/login.pug');
-})
+});
+
+router.get('/register', (req, res) =>{
+    return res.render('pages/register.pug');
+});
+
 
 /**
  *  Check if user exist and password matched
@@ -18,7 +23,11 @@ router.get('/login',(req: Request, res: Response) =>{
 
 router.post('/login',validateLogin,AuthController.login);
 
+router.post('/register', AuthController.register);
+
 router.get('/logout',async(req, res) => {
+    console.log("Im login out");
+    
     const sessionId = req.signedCookies.sesionId;
     
     if(sessionId){
@@ -33,5 +42,6 @@ router.get('/logout',async(req, res) => {
         message: 'Can not logout'
     });
 })
+
 
 export default router;

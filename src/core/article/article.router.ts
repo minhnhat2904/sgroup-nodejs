@@ -3,6 +3,8 @@ const router = express.Router();
 import Article from '../../model/article';
 import { ArticleController } from './article.controller';
 import { validateArticle } from './validator/article.validator';
+import cloudinary from 'cloudinary'; 
+const fileUploader = require('../config/cloudinary');
 
 //du lieu trang sport
 router.get('/sport',ArticleController.showSport);
@@ -14,7 +16,7 @@ router.get('/new', (req, res, next)=>{
     return res.render('pages/newArticle.pug');
 });
 
-router.post('/new', validateArticle, ArticleController.create);
+router.post('/new', validateArticle, fileUploader.single('file'), ArticleController.create);
 
 router.get('/:_id/update', async (req, res, next)=>{
     const {_id} = req.params;
