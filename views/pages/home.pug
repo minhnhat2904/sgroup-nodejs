@@ -2,24 +2,26 @@ extends ../layout/main.pug
 
 block content
   h3 Noi bat hom nay
-  each article in articles
-    ul
+  ul
+    each article in articles
       li 
         div 
             p 
               a(href=`/articles/${article.slug}`)
                 strong #{article.title}
             p #{article.content}
+            img(src=`${article.linkImg}` alt="")
+            br
             a(href=`/articles/${article._id}/update`) Update
             button.mx-2.btn.btn-danger(data-bs-toggle="modal" data-bs-target="#exampleModal") Delete
-      
-    #exampleModal.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
-      .modal-dialog
-        .modal-content
-          .modal-header
-            h5#exampleModalLabel.modal-title Delete this article
-            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-          .modal-footer
-            button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
-            form(action=`http://localhost:3000/articles/${article.slug}?_method=DELETE`, method='POST')
-              button.btn.btn-danger(type='submit') Delete
+            #exampleModal.modal.fade(tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true')
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    h5#exampleModalLabel.modal-title Delete this article
+                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                  .modal-footer
+                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+                    form(action=`http://localhost:3000/articles/${article.slug}?_method=DELETE`, method='POST')
+                      button.btn.btn-danger(type='submit') Delete
+            

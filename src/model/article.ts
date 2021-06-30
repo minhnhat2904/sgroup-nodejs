@@ -5,7 +5,7 @@ const ArticleSchema = new Schema({
     content: String,
     category: String,
     slug: String,
-    url: String,
+    linkImg: String,
     createdAt:{
         type: Date,
     },

@@ -3,20 +3,24 @@ const router = express.Router();
 import Article from '../../model/article';
 import { ArticleController } from './article.controller';
 import { validateArticle } from './validator/article.validator';
-import cloudinary from 'cloudinary'; 
-const fileUploader = require('../config/cloudinary');
+import { join } from "path";
+import { multerUploader } from '../../middleware/multer.middleware';
+const ROOT_DIR = process.cwd();
+
+const PUBLIC_PATH = join(ROOT_DIR, 'public');
 
 //du lieu trang sport
 router.get('/sport',ArticleController.showSport);
 //du lieu trang weathers
 router.get('/weathers',ArticleController.showWeather);
 
+router.post('/upload', multerUploader, ArticleController.uploadImage);
 
 router.get('/new', (req, res, next)=>{
     return res.render('pages/newArticle.pug');
 });
 
-router.post('/new', validateArticle, fileUploader.single('file'), ArticleController.create);
+router.post('/new', validateArticle, ArticleController.create);
 
 router.get('/:_id/update', async (req, res, next)=>{
     const {_id} = req.params;

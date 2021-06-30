@@ -3,13 +3,15 @@ extends ../layout/main.pug
 block content
     p Add new article
     form#new_article(enctype="multipart/form-data")
+        input#method(type="hidden" name="_method" value="POST")
         input#title(type="text" class="title" placeholder="title" name="title")
         input#content(type="text" class="content" placeholder="content" name="content")
-        input#category(type="text" class="category" placeholder="category" name="category")
-        .form-group 
-            label Thumbnail 
-            input(type="file" name="thumbnail ")
-
+        //- input#category(type="text" class="category" placeholder="category" name="category")
+        select#category
+            option(selected='') Category
+            option(value='sport') Sport
+            option(value='weathers') Weathers
+        input#thumbnail(type="file" class="thumbnail" name="thumbnail")
         button.btn.btn-primary(type='submit') Create
 block scripts
     script(src="../js/article.js")

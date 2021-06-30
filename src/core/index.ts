@@ -15,4 +15,5 @@ router.get('/', authRequired, async (req : Request, res : Response)=>{
 router.use('/articles',articleRouter);
 router.use('/auth', authNotRequired, authRouter);
 
+
 export = router;

@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { IArticleDto } from "../dto/article.dto";
 
-export async function validateArticle(req: Request, res: Response, next: NextFunction){
+export async function validateArticle(req: Request, res: Response, next: NextFunction){    
+    
     const body : IArticleDto = req.body;
-
+    console.log(req.body);
+    
     if(!body.title || body.title.match(/^[0-9]+$/)){
         return res.send('Title Invalid');
     }

@@ -1,15 +1,14 @@
 import express, { Request, Response } from 'express';
 import {join}  from 'path';
-
 import database from './config/database';
 import methodOverride from './middleware/create_method_override';
 import router from './core';
 import cookieParser from 'cookie-parser';
 import {envConfig} from './env';
-const multer = require('multer');
 const ROOT_DIR = process.cwd();
 
 const PUBLIC_PATH = join(ROOT_DIR, 'public');
+
 const VIEW_PATH = join(ROOT_DIR,'views')
 const app = express();
 

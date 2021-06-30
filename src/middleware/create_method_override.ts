@@ -26,7 +26,6 @@ export default  function methodOverride (getter:any, options?:any) {
       // replace
       if (val !== undefined) {
         req.method = val;
-        // debug('override %s as %s', req.originalMethod, req.method)
       }
   
       next()
