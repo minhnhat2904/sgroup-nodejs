@@ -25,13 +25,4 @@ export async function validateLogin(req: Request, res: Response, next: NextFunct
         return res.send("Wrong password format");
     }
     return next();
-    // try {
-    //     const err = await Promise.all([
-    //         validate(!body.email, /\S+@\S+\.\S+/, 'Email is not formatted correcttly'),
-    //         validate(!body.password, /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/, 'Wrong password format'),
-    //     ]);
-    //     return res.send(err); 
-    // } catch (error) {
-    //     return res.send(error);
-    // }
 }

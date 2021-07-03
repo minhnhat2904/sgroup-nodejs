@@ -4,7 +4,7 @@ import SessionModel from '../../model/session';
 import { AuthController } from './auth.controller';
 import { validateLogin } from './validator/login.validator';
 //authen
-router.get('/login',(req, res) =>{
+router.get('/login', (req, res) =>{
     return res.render('pages/login.pug');
 });
 
@@ -21,11 +21,11 @@ router.get('/register', (req, res) =>{
  *  If not lock -> expired -> delete the old and create new
  */
 
-router.post('/login',validateLogin,AuthController.login);
+router.post('/login',validateLogin, AuthController.loginWithoutSession);
 
 router.post('/register', AuthController.register);
 
-router.get('/logout',async(req, res) => {
+router.get('/logout', async(req, res) => {
     console.log("Im login out");
     
     const sessionId = req.signedCookies.sesionId;
