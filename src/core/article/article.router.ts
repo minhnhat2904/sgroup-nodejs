@@ -5,6 +5,7 @@ import { ArticleController } from './article.controller';
 import { validateArticle } from './validator/article.validator';
 import { join } from "path";
 import { multerUploader } from '../../middleware/multer.middleware';
+import { JwtAuthenticator } from '../auth/guard/JwtAuthenticator.guard';
 const ROOT_DIR = process.cwd();
 
 const PUBLIC_PATH = join(ROOT_DIR, 'public');
@@ -20,7 +21,7 @@ router.get('/new', (req, res, next)=>{
     return res.render('pages/newArticle.pug');
 });
 
-router.post('/new', validateArticle, ArticleController.create);
+router.post('/new', validateArticle, JwtAuthenticator.getInstance().getAuthenticator, ArticleController.create);
 
 router.get('/:_id/update', async (req, res, next)=>{
     const {_id} = req.params;

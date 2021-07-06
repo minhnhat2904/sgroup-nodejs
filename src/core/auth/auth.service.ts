@@ -58,7 +58,10 @@ class Service implements AuthService {
 
         return {
             info,
-            accessToken: jwt.sign({_id: info._id}, envConfig.get('JWT_SECRET')),
+            accessToken: jwt.sign({
+                _id: info._id, 
+                roles: []
+            }, envConfig.get('JWT_SECRET')),
         }
     }
     async loginDefault(loginDto: ILoginDto): Promise<string | null> {

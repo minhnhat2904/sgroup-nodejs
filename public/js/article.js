@@ -11,6 +11,8 @@ document.querySelector("#new_article").addEventListener('submit', async function
     const file = document.querySelector("#thumbnail");
     let linkImg = "";
 
+    const user = localStorage.getItem('user');
+
     data.append("thumbnail", file.files[0]);
 
     let options = {
@@ -32,6 +34,11 @@ document.querySelector("#new_article").addEventListener('submit', async function
         let upload = await postImageRes.json();
         linkImg = upload.link;
     }
+
+    if(!user){
+        alert('Your current login is out of date');
+    }
+
     const response = await fetch('http://localhost:3000/articles/new', {
         method: 'POST',
         body: JSON.stringify({
@@ -42,12 +49,13 @@ document.querySelector("#new_article").addEventListener('submit', async function
         }),
         headers: {
             'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + JSON.parse(user).data.accessToken,
         },
     });
     
     if (!response.ok) {
-        alert('Error');
+        alert('Create failed');
     } else {
         alert('Create success');
         location.href = '/';

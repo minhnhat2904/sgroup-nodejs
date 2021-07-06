@@ -24,4 +24,6 @@ block content
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
                     form(action=`http://localhost:3000/articles/${article.slug}?_method=DELETE`, method='POST')
                       button.btn.btn-danger(type='submit') Delete
+block scripts
+    script(src="../js/private.js")
             

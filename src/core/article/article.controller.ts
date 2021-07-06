@@ -1,9 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import slugify from 'slugify';
 import Article from '../../model/article';
+import { AuthenticatedRequest } from "../auth/guard/JwtAuthenticator.guard";
 import { UploadService } from "../media/media.service";
 import { SessionServiceImpl } from "../session/session.service";
 import { ArticleService } from "./api/articleService";
+import UserModel from "../../model/user";
+import {Types} from 'mongoose';
 
 
 class Controller {
@@ -15,18 +18,32 @@ class Controller {
 
     create = async (req : Request, res: Response, next: NextFunction) => { 
         try{ 
+            const user = await UserModel.findOne({
+                _id: (req as AuthenticatedRequest)['user']['_id']
+            })
+
+            if(!user) {
+                throw Error('User is not acceptable');
+            }
             var newArticle = {
                 "title" : req.body.title,
                 "content" : req.body.content,
                 "category" : req.body.category,
                 "slug" : slugify(req.body.title),
                 "linkImg" : req.body.linkImg,
+                "user" : user._id,
             }
+
             // database.dbNewArticle(newArticle);
             await Article.create(newArticle);
-            return res.redirect("/");
+            return res.status(201).json({
+                message: "Create Success"
+            });
         } catch(err){
-            console.log(err);
+            return res.status(400).json({
+                message: err.message,
+                stack: err.stack,
+            })
         }
     }
 
